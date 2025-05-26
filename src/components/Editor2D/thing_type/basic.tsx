@@ -1,7 +1,7 @@
 import Konva from "konva"
-import type { Shape } from "./shapes"
+import type { ThingType as ThingType } from "."
 
-export const rect: Shape = {
+export const rect: ThingType = {
 	id: "rect",
 	Icon: () => <div>矩形</div>,
 	node: (positions) => new Konva.Rect({
@@ -15,7 +15,7 @@ export const rect: Shape = {
 	})
 }
 
-export const circle: Shape = {
+export const circle: ThingType = {
 	id: "circle",
 	Icon: () => <div>圆形</div>,
 	node: (positions) => new Konva.Circle({
@@ -28,7 +28,7 @@ export const circle: Shape = {
 	})
 }
 
-export const triangle: Shape = {
+export const triangle: ThingType = {
 	id: "triangle",
 	Icon: () => <div>三角形</div>,
 	node: (positions) => new Konva.Line({

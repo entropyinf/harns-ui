@@ -1,4 +1,4 @@
-import Editor2D from "./components/Editor2D/Editor2D"
+import Editor2D from "./components/Editor2D"
 
 
 function App() {
