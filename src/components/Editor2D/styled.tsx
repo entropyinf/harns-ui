@@ -6,19 +6,18 @@ export const Container = styled.div`
   height: 100vh;
 `
 
-export const ThingTypeBox = styled.div`
+export const List = styled.div`
   display: flex;
-  width: 200px;
+  flex-direction: column;
+  min-width: 10rem;
   background-color: #f0f0f0;
 `
 
-export const ThingTypeItem = styled.div`
+export const ListItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
   cursor: pointer;
   &:hover {
     background-color: #e0e0e0;

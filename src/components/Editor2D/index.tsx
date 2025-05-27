@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
-import { thingTypes } from './thing_type';
+import { things } from './thing';
 import { EditorStage } from './stage';
-import { Container, StageBox, ThingTypeBox, ThingTypeItem } from './styled';
+import { Container, List, ListItem, StageBox } from './styled';
 
 export default function Editor2D() {
   const box = useRef<HTMLDivElement>(null);
@@ -16,18 +16,18 @@ export default function Editor2D() {
   }, []);
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, id: string) => {
-    e.dataTransfer.setData('elementId', id);
+    e.dataTransfer.setData('ThingId', id);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const id = e.dataTransfer.getData('elementId')
-    const element = thingTypes[id];
-    if (element) {
-      const rect = box.current?.getBoundingClientRect();
-      const x = e.clientX - (rect?.left || 0);
-      const y = e.clientY - (rect?.top || 0);
-      stage.current?.add({ x, y }, element);
+    const id = e.dataTransfer.getData('ThingId')
+    const thing = things[id];
+    if (thing) {
+      const { left, top } = box.current?.getBoundingClientRect() || { left: 0, top: 0 };
+      const x = e.clientX - left;
+      const y = e.clientY - top;
+      stage.current?.add({ x, y }, thing);
     }
   };
 
@@ -37,19 +37,15 @@ export default function Editor2D() {
 
   return (
     <Container>
-      <ThingTypeBox>
-        {Object.entries(thingTypes).map(([id, thingType]) => (
-          <ThingTypeItem key={id} draggable onDragStart={(e) => handleDragStart(e, id)}>
-            {<thingType.Icon />}
-          </ThingTypeItem>
+      <List>
+        {Object.entries(things).map(([id, thing]) => (
+          <ListItem key={id} draggable onDragStart={(e) => handleDragStart(e, id)}>
+            {<thing.Icon />}
+          </ListItem>
         ))}
-      </ThingTypeBox>
+      </List>
 
-      <StageBox
-        ref={box}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-      />
+      <StageBox ref={box} onDrop={handleDrop} onDragOver={handleDragOver} />
     </Container>
   );
 };

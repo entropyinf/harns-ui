@@ -3,13 +3,30 @@ import type { Vector2d } from "konva/lib/types";
 import React from "react";
 import { circle, rect, triangle } from "./basic";
 
-export interface ThingType {
-  id: string;
+type Characteristic = {
+  name: string
+  description?: string
+}
+
+type Property = {
+  name: string
+  description?: string
+}
+
+export interface ThingType<C = Characteristic, P = Property> {
+  id: string
+  typeId?: string
   group?: string
-  chrecteristic?: { [key: string]: any }
-  properties?: { [key: string]: any }
-  Icon: React.FC;
-  node: (positions: Vector2d) => Konva.Group | Konva.Shape;
+  characteristics?: Record<string, C>
+  Icon: React.FC
+  node(pos: Vector2d): Konva.Group | Konva.Shape
+}
+
+export interface Thing {
+  id: string
+  type: ThingType
+  characteristics?: Record<string, any>
+  properties?: Record<string, any>
 }
 
 function arrayToRecord<T extends { id: string }>(array: T[]): Record<string, T> {
@@ -19,16 +36,16 @@ function arrayToRecord<T extends { id: string }>(array: T[]): Record<string, T> 
   }, {} as Record<string, T>);
 }
 
-function createThingTypeByImg(id: string, src: string): ThingType {
+function createThingByImg(id: string, src: string): ThingType {
   return {
     id: id,
     Icon: () => <img src={src} width={50} height={50} />,
-    node: (positions) => {
+    node: (pos) => {
       const img = new Image();
       img.src = src;
       return new Konva.Image({
-        x: positions.x,
-        y: positions.y,
+        x: pos.x,
+        y: pos.y,
         image: img,
         width: 150,
         height: 150,
@@ -39,9 +56,9 @@ function createThingTypeByImg(id: string, src: string): ThingType {
 
 import Fan from "@/assets/fan.svg";
 
-export const thingTypes: Record<string, ThingType> = arrayToRecord([
+export const things: Record<string, ThingType> = arrayToRecord([
   rect,
   circle,
   triangle,
-  createThingTypeByImg("fan", Fan),
+  createThingByImg("fan", Fan),
 ]);

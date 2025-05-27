@@ -1,6 +1,6 @@
 import Konva from "konva";
 import type { Vector2d } from "konva/lib/types";
-import { type ThingType } from "./thing_type";
+import { type ThingType } from "./thing";
 
 type EditorStageConfig = { container: HTMLDivElement };
 
@@ -41,7 +41,7 @@ export class EditorStage {
     node.draggable(true);
     this.content.add(node);
 
-    node.on('click tap', (e) => {
+    node.on('click tap', () => {
       this.transformer.nodes([node]);
       this.transformer.getLayer()?.batchDraw();
     });
