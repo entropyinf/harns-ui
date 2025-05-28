@@ -3,30 +3,22 @@ import type { Vector2d } from "konva/lib/types";
 import React from "react";
 import { circle, rect, triangle } from "./basic";
 
-type Characteristic = {
+type Attribute = {
   name: string
   description?: string
+  validate?(value: any): [boolean, string]
 }
 
-type Property = {
-  name: string
-  description?: string
-}
-
-export interface ThingType<C = Characteristic, P = Property> {
-  id: string
-  typeId?: string
-  group?: string
-  characteristics?: Record<string, C>
-  Icon: React.FC
-  node(pos: Vector2d): Konva.Group | Konva.Shape
+export interface ThingType {
+  readonly id: string
+  readonly Icon: React.FC
+  thing(pos: Vector2d): Thing
 }
 
 export interface Thing {
-  id: string
-  type: ThingType
-  characteristics?: Record<string, any>
-  properties?: Record<string, any>
+  readonly id: string
+  readonly type: ThingType
+  readonly node: Konva.Group | Konva.Shape
 }
 
 function arrayToRecord<T extends { id: string }>(array: T[]): Record<string, T> {
@@ -36,23 +28,34 @@ function arrayToRecord<T extends { id: string }>(array: T[]): Record<string, T> 
   }, {} as Record<string, T>);
 }
 
-function createThingByImg(id: string, src: string): ThingType {
+function createImageThingType(id: string, src: string): ThingType {
+  const Icon: React.FC = () => <img src={src} width={50} height={50} />;
+
+  const thing = (pos: Vector2d): Thing => {
+    const img = new Image();
+    img.src = src;
+    const node = new Konva.Image({
+      x: pos.x,
+      y: pos.y,
+      image: img,
+      width: 150,
+      height: 150,
+    });
+
+    return {
+      id,
+      type: { id, Icon, thing },
+      node,
+    };
+  };
+
   return {
-    id: id,
-    Icon: () => <img src={src} width={50} height={50} />,
-    node: (pos) => {
-      const img = new Image();
-      img.src = src;
-      return new Konva.Image({
-        x: pos.x,
-        y: pos.y,
-        image: img,
-        width: 150,
-        height: 150,
-      })
-    }
-  }
+    id,
+    Icon,
+    thing,
+  };
 }
+
 
 import Fan from "@/assets/fan.svg";
 
@@ -60,5 +63,5 @@ export const things: Record<string, ThingType> = arrayToRecord([
   rect,
   circle,
   triangle,
-  createThingByImg("fan", Fan),
+  createImageThingType("fan", Fan),
 ]);

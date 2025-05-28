@@ -37,7 +37,10 @@ export class EditorStage {
     const newX = (originalX - this.stage.x()) / this.stage.scaleX();
     const newY = (originalY - this.stage.y()) / this.stage.scaleY();
 
-    const node = ele.node({ x: newX, y: newY })
+    const thing = ele.thing({ x: newX, y: newY })
+
+    const node = thing.node
+
     node.draggable(true);
     this.content.add(node);
 
