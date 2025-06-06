@@ -1,9 +1,9 @@
-import Editor2D from "./components/Editor2D/Editor2D"
+import Editor3D from "./components/Editor3D"
 
 
 function App() {
 	return <>
-		<Editor2D />
+		<Editor3D />
 	</>
 }
 
