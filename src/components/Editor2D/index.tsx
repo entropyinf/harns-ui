@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
-import { elements } from './shapes/shapes';
 import { EditorStage } from './stage';
+import { things } from './thing';
 
 export default function Editor2D() {
 	const box = useRef<HTMLDivElement>(null);
@@ -21,12 +21,12 @@ export default function Editor2D() {
 	const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault();
 		const id = e.dataTransfer.getData('elementId')
-		const element = elements[id];
-		if (element) {
+		const thing = things[id];
+		if (thing) {
 			const rect = box.current?.getBoundingClientRect();
 			const x = e.clientX - (rect?.left || 0);
 			const y = e.clientY - (rect?.top || 0);
-			stage.current?.add({ x, y }, element);
+			stage.current?.add({ x, y }, thing);
 		}
 	};
 
@@ -37,14 +37,14 @@ export default function Editor2D() {
 	return (
 		<div style={{ display: 'flex', height: '100%' }}>
 			<div style={{ width: 200, backgroundColor: '#f0f0f0', padding: 10 }}>
-				{Object.entries(elements).map(([id, element]) => (
+				{Object.entries(things).map(([id, thing]) => (
 					<div
 						key={id}
 						draggable
 						onDragStart={(e) => handleDragStart(e, id)}
 						style={{ marginBottom: 10, padding: 10, backgroundColor: 'white', cursor: 'move' }}
 					>
-						{<element.Icon />}
+						{<thing.Icon />}
 					</div>
 				))}
 			</div>

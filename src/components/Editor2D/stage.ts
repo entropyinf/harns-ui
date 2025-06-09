@@ -71,13 +71,11 @@ export class EditorStage {
 
     this.grid.destroyChildren();
 
-    // 获取舞台的缩放比例和偏移量
     const scale = stage.scaleX();
     const scaledSize = gridSize * scale;
     const offsetX = Math.floor(stage.x() / scaledSize) * gridSize;
     const offsetY = Math.floor(stage.y() / scaledSize) * gridSize;
 
-    // 获取舞台的宽度和高度
     const scaleFactor = Math.min(scaledSize, gridSize / 4);
     const w = Math.floor(stage.width() / scaleFactor) * gridSize;
     const h = Math.floor(stage.height() / scaleFactor) * gridSize;
@@ -87,7 +85,6 @@ export class EditorStage {
     const top = -2 * h - offsetY;
     const bottom = 2 * h - offsetY;
 
-    // 绘制垂直网格线
     for (let x = left; x < right; x += gridSize) {
       const line = new Konva.Line({
         points: [x, top, x, bottom],
@@ -97,7 +94,6 @@ export class EditorStage {
       this.grid.add(line);
     }
 
-    // 绘制水平网格线
     for (let y = top; y < bottom; y += gridSize) {
       const line = new Konva.Line({
         points: [left, y, right, y],
@@ -126,7 +122,6 @@ export class EditorStage {
 
       let newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
 
-      // 设置最小,最大缩放值
       if (newScale < 0.25) newScale = 0.25;
       if (newScale > 4) newScale = 4;
 
@@ -135,11 +130,8 @@ export class EditorStage {
         y: pointer.y - mousePointTo.y * newScale
       };
 
-      // 设置舞台的缩放值
       stage.scale({ x: newScale, y: newScale });
-      // 设置舞台的位置
       stage.position(newPos);
-      // 批量绘制舞台
       stage.batchDraw();
     });
   }
