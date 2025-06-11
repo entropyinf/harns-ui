@@ -1,23 +1,18 @@
-import React from 'react';
+import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
-import { Outlet } from 'react-router-dom';
 
-interface DashboardLayoutProps {
-	children?: React.ReactNode;
-}
 
-export default function ({ children }: DashboardLayoutProps) {
+export default function () {
 	return (
 		<Container>
 			<Navbar />
 			<MainContent>
 				<Sidebar />
-				<ContentArea>
-					{children}
+				<PageArea>
 					<Outlet />
-				</ContentArea>
+				</PageArea>
 			</MainContent>
 		</Container>
 	);
@@ -36,9 +31,9 @@ const MainContent = styled.div`
   overflow: hidden;
 `;
 
-const ContentArea = styled.main`
+const PageArea = styled.main`
   flex: 1;
-  padding: 2rem;
+  padding: 1rem;
   overflow-y: auto;
   background-color: ${({ theme }) => theme.colors.background};
-`;  
+`;
