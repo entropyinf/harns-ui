@@ -1,62 +1,75 @@
-import { type TreeItem } from 'react-sortable-tree';
-import type { ThingType } from "./types";
-import { Tree as RATree } from 'react-arborist';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
-
-type NodeData = Pick<ThingType, "id" | "parentTypeId" | "name" | "description">
+export type NodeData = {
+	id: string
+	name: string
+	parentId: string
+	children?: NodeData[]
+} & Record<string, any>
 
 type TreeProp = {
 	data: NodeData[]
-};
+}
 
-export default function Tree(prop: TreeProp) {
-	const treeData = buildTree(prop.data);
-	const data = [
-		{ id: "1", name: "Unread" },
-		{ id: "2", name: "Threads" },
-		{
-			id: "3",
-			name: "Chat Rooms",
-			children: [
-				{ id: "c1", name: "General" },
-				{ id: "c2", name: "Random" },
-				{ id: "c3", name: "Open Source Projects" },
-			],
-		},
-		{
-			id: "4",
-			name: "Direct Messages",
-			children: [
-				{ id: "d1", name: "Alice" },
-				{ id: "d2", name: "Bob" },
-				{ id: "d3", name: "Charlie" },
-			],
-		},
-	];
+export default function Tree({ data }: TreeProp) {
+	useEffect(() => fillChildren(data), [data])
+
 	return (
 		<>
-			<RATree data={data} />
+			{data.map(item => <TreeNode item={item} />)}
 		</>
 	);
 }
 
-function buildTree(data: NodeData[]): Array<TreeItem> {
-	const tree: Array<TreeItem> = [
-		{
-			title: 'Root',
-			subtitle: 'Root',
-			children: [
-				{
-					title: 'Root1',
-					subtitle: 'Root',
-					children: [
-
-					]
-				}
-			]
-		}
-	];
-
-
-	return tree
+type TreeNodeProp = {
+	item: NodeData
 }
+
+function TreeNode(props: TreeNodeProp) {
+	const [expand, setExpand] = useState(false)
+	const item = props.item
+
+	const toggleExpand = () => {
+		setExpand(!expand && !!item.children)
+	}
+
+	return <>
+		<StyledNode onClick={toggleExpand}>
+			{item.name}
+			{expand && <StyledSubNodes>
+				{item.children?.map(c => <TreeNode item={c} />)}
+			</StyledSubNodes>}
+		</StyledNode>
+	</>
+}
+
+
+function fillChildren(data: NodeData[]) {
+	const parentIdMap = new Map<string, NodeData[]>()
+	for (const item of data) {
+		if (!parentIdMap.has(item.parentId)) {
+			parentIdMap.set(item.parentId, [])
+		}
+		parentIdMap.get(item.parentId)?.push(item)
+	}
+	for (const item of data) {
+		item.children = parentIdMap.get(item.id)
+	}
+}
+
+const StyledNode = styled.li`
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  list-style-type: none;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+const StyledSubNodes = styled.ul`
+  margin: 0 0 0 0.5rem;
+  overflow: hidden;
+  padding-left: 0;
+`;
