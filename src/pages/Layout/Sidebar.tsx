@@ -1,67 +1,41 @@
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
-import { pages } from '../../router';
+import { Route } from "@/router";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-export const Sidebar = () => {
+export default function Sidebar(prop: { pages: Route[] }) {
+	const { pages } = prop;
+	const navigate = useNavigate();
 
 	return (
-		<SidebarContainer>
-			<MenuList>
-				{pages.map((item) => (
-					<NavItem key={item.path}>
-						<NavLink
-							to={item.path || "/"}
-							style={({ isActive }) => ({
-								backgroundColor: isActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
-								color: isActive ? '#fff' : '#a0aec0',
-							})}
-						>
-							{item.icon}
-							<span>{item.title}</span>
-						</NavLink>
-					</NavItem>
-				))}
-			</MenuList>
-		</SidebarContainer>
-	);
+		<Root>
+			{pages.map(p => (
+				<Item
+					key={p.path}
+					onClick={() => navigate(p.path || '/')}
+				>
+					{p.icon}{p.title}
+				</Item>
+			))}
+		</Root>
+	)
 };
 
-const SidebarContainer = styled.aside`
-  width: 240px;
-  background-color: ${({ theme }) => theme.colors.sidebar};
-  color: #a0aec0;
-  height: 100%;
-  overflow-y: auto;
-  transition: width 0.3s ease;
-`;
-
-const MenuList = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 1rem 0;
-`;
-
-const NavItem = styled.li`
-  a {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.75rem 1.5rem;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.05);
-      color: white;
-    }
-    
-    svg {
-      width: 20px;
-      height: 20px;
-    }
-    
-    span {
-      white-space: nowrap;
-    }
-  }
-`;  
+const Root = styled.div`
+	max-width: 15rem;
+	min-width: 15rem;
+	background-color: ${({ theme }) => theme.colors.sidebar};
+	color: ${({ theme }) => theme.colors.text};
+	border-radius: 0.75rem;
+	margin: 0.5rem;
+	padding: 0.75rem;
+	border-right: 2px solid #f0f0f0;
+`
+const Item = styled.div`
+	user-select: none;
+	border-radius: 0.5rem;
+	padding: 4px 0.75rem;
+	&:hover{
+		cursor: pointer;
+		background-color: #f5f5f5
+	}
+`

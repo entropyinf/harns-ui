@@ -1,5 +1,5 @@
 import thingTypeList from "./data";
-import Tree from "./Tree";
+import Tree from "./tree";
 import type { ThingType } from "./types";
 
 export default function ThingTypePage() {

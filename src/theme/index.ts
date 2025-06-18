@@ -24,9 +24,9 @@ export const theme: HarnsTheme = {
 		success: '#00B42A',
 		warning: '#FF7D00',
 		danger: '#F53F3F',
-		sidebar: '#1D2129',
+		sidebar: '#fafafa',
 		background: '#F2F3F5',
-		text: '#1D2129',
+		text: 'black',
 		textSecondary: '#4E5969',
 	},
 };  

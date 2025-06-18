@@ -1,35 +1,32 @@
 import { lazy, type ReactNode } from 'react';
-import { FaUsers } from 'react-icons/fa';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
-import Layout from '../pages/Layout';
-import { FaAmazon } from 'react-icons/fa6';
+import Layout from '../pages/layout';
 
-const DevicePage = lazy(() => import('../pages/Device'));
-const ThingTypePage = lazy(() => import('../pages/ThingType'));
+const DevicePage = lazy(() => import('../pages/device'));
+const ThingTypePage = lazy(() => import('../pages/thing-type'));
 
-export type RichRouteObject = {
+export type Route = {
 	title?: string;
 	icon?: ReactNode,
-	children?: RichRouteObject[];
+	children?: Route[];
 } & RouteObject
 
-
-export const pages: RichRouteObject[] = [
+export const pages: Route[] = [
 	{
 		path: '/devices',
 		title: 'Devices',
-		icon: <FaUsers />,
+		icon: <></>,
 		element: <DevicePage />,
 	},
 	{
 		path: '/thingTypes',
 		title: 'Thing Types',
-		icon: <FaAmazon />,
+		icon: <></>,
 		element: <ThingTypePage />,
 	}
 ]
 
-const routes: RichRouteObject[] = [
+const routes: Route[] = [
 	{
 		path: '/',
 		element: <Layout />,

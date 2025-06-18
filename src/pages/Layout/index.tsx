@@ -1,39 +1,29 @@
+import { pages } from '@/router';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import { Navbar } from './Navbar';
-import { Sidebar } from './Sidebar';
-
+import Sidebar from './sidebar';
 
 export default function () {
 	return (
-		<Container>
-			<Navbar />
-			<MainContent>
-				<Sidebar />
-				<PageArea>
-					<Outlet />
-				</PageArea>
-			</MainContent>
-		</Container>
+		<UI.Box>
+			<Sidebar pages={pages} />
+			<UI.Outlet>
+				<Outlet />
+			</UI.Outlet>
+		</UI.Box>
 	);
 };
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
-`;
+namespace UI {
+	export const Box = styled.div`
+		display: flex;
+		height: 100%;
+	`
+	export const Outlet = styled.div`
+		padding: 1rem;
+	`
+}
 
-const MainContent = styled.div`
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-`;
 
-const PageArea = styled.main`
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-  background-color: ${({ theme }) => theme.colors.background};
-`;
+
+

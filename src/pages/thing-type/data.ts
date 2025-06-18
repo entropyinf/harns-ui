@@ -2,7 +2,7 @@ import type { ThingType } from './types';
 
 const thingTypeList: ThingType[] = [
 	{
-		name: 'Root Thing Type',
+		name: 'Root',
 		tenant: 'tenant1',
 		id: 'root-001',
 		parentTypeId: '',
@@ -36,7 +36,7 @@ const thingTypeList: ThingType[] = [
 		}
 	},
 	{
-		name: 'Child Thing Type 1',
+		name: '温度传感器',
 		tenant: 'tenant1',
 		id: 'child-001',
 		parentTypeId: 'root-001',
