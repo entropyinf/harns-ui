@@ -23,7 +23,7 @@ export default function Sidebar(prop: { pages: Route[] }) {
 const Root = styled.div`
 	max-width: 15rem;
 	min-width: 15rem;
-	background-color: ${({ theme }) => theme.colors.sidebar};
+	background-color: ${({ theme }) => theme.colors.background};
 	color: ${({ theme }) => theme.colors.text};
 	border-radius: 0.75rem;
 	margin: 0.5rem;
@@ -34,6 +34,9 @@ const Item = styled.div`
 	user-select: none;
 	border-radius: 0.5rem;
 	padding: 4px 0.75rem;
+  gap: 0.75rem;
+  display: flex;
+  align-items: center;
 	&:hover{
 		cursor: pointer;
 		background-color: #f5f5f5

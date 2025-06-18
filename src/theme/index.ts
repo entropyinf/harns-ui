@@ -25,7 +25,7 @@ export const theme: HarnsTheme = {
 		warning: '#FF7D00',
 		danger: '#F53F3F',
 		sidebar: '#fafafa',
-		background: '#F2F3F5',
+		background: '#fafafa',
 		text: 'black',
 		textSecondary: '#4E5969',
 	},

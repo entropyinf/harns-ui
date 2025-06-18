@@ -1,6 +1,8 @@
 import { lazy, type ReactNode } from 'react';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import Layout from '../pages/layout';
+import { FaTemperatureEmpty } from "react-icons/fa6";
+import { FaComputer } from "react-icons/fa6";
 
 const DevicePage = lazy(() => import('../pages/device'));
 const ThingTypePage = lazy(() => import('../pages/thing-type'));
@@ -14,14 +16,14 @@ export type Route = {
 export const pages: Route[] = [
 	{
 		path: '/devices',
-		title: 'Devices',
-		icon: <></>,
+		title: '采集设备',
+		icon: <FaTemperatureEmpty/>,
 		element: <DevicePage />,
 	},
 	{
 		path: '/thingTypes',
-		title: 'Thing Types',
-		icon: <></>,
+		title: '物类型',
+		icon: <FaComputer/>,
 		element: <ThingTypePage />,
 	}
 ]
