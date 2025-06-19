@@ -1,29 +1,20 @@
-import { pages } from '@/router';
+import { AppSidebar } from '@/components/app-sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { Outlet } from 'react-router-dom';
-import styled from 'styled-components';
-import Sidebar from './sidebar';
 
 export default function () {
 	return (
-		<UI.Box>
-			<Sidebar pages={pages} />
-			<UI.Outlet>
+		<div className='flex h-full'>
+			<div>
+				<SidebarProvider>
+					<AppSidebar />
+				</SidebarProvider>
+			</div>
+			<div className='p-1'>
 				<Outlet />
-			</UI.Outlet>
-		</UI.Box>
+			</div>
+		</div>
 	);
 };
-
-namespace UI {
-	export const Box = styled.div`
-		display: flex;
-		height: 100%;
-	`
-	export const Outlet = styled.div`
-		padding: 1rem;
-	`
-}
-
-
 
 

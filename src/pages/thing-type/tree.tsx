@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from 'react';
 import { FaAngleRight } from "react-icons/fa6";
-import styled, { css } from 'styled-components';
 
 export type Data = {
   id: string
@@ -24,9 +23,9 @@ export default function Tree(props: TreeProp) {
 
   return (
     <Context.Provider value={props}>
-      <UI.Root>
+      <div className="rounded-3xl w-80 h-full">
         {data.filter(v => !v.parentId).map(item => <TreeNode value={item} />)}
-      </UI.Root>
+      </div>
     </Context.Provider>
   );
 }
@@ -46,15 +45,20 @@ function TreeNode(props: TreeNodeProp) {
   const ctx = useContext(Context)
 
   return <>
-    <UI.TreeNode onClick={() => ctx?.onSelected?.(value)}>
+    <li
+      className="select-none rounded-2xl px-3 py-1 list-none flex items-center justify-between hover:cursor-pointer hover:bg-gray-100"
+      onClick={() => ctx?.onSelected?.(value)}
+    >
       {value.name}
       {hasChildren && (
-        <UI.Arrow expand={expand} onClick={toggleExpand}>
+        <div
+          className="inline-block transition-transform duration-300 ${expand ? 'rotate-90' : ''} hover:cursor-pointer"
+          onClick={toggleExpand}
+        >
           <FaAngleRight />
-        </UI.Arrow>
+        </div>
       )}
-    </UI.TreeNode>
-
+    </li>
     {expand && <TreeNodes value={value.children} />}
   </>
 }
@@ -62,9 +66,9 @@ function TreeNode(props: TreeNodeProp) {
 function TreeNodes(props: { value?: Data[] }) {
   const { value } = props;
   return (
-    <UI.TreeNodes>
+    <ul className="pl-4 m-0 border-l border-gray-200">
       {value?.map(c => <TreeNode value={c} />)}
-    </UI.TreeNodes>
+    </ul>
   )
 }
 
@@ -80,41 +84,4 @@ function fillChildren(data: Data[]) {
   for (const item of data) {
     item.children = parentIdMap.get(item.id)
   }
-}
-
-namespace UI {
-  export const Root = styled.div`
-		border-radius: 0.75rem;
-		width: 20rem;
-    height: 100%;
-	`
-  export const TreeNode = styled.li`
-		user-select: none;
-		border-radius: 0.5rem;
-		padding: 4px 0.75rem;
-		list-style: none;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		&:hover{
-			cursor: pointer;
-			background-color: #f5f5f5
-		}
-	`
-  export const TreeNodes = styled.ul`
-		padding-left: 1rem;
-		margin: 0;
-		border-left: 1px solid #f0f0f0;
-	`
-
-  export const Arrow = styled.div<{ expand: boolean }>`
-		display: inline-block;
-		transition: transform 0.3s;
-		${props => props.expand && css`
-			transform: rotate(90deg);
-		`}
-		&:hover{
-			cursor: pointer;
-		}
-	`
 }
