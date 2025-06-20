@@ -1,6 +1,6 @@
 import type { ThingType } from './types';
 
-const thingTypeList: ThingType[] = [
+const thingTypes: ThingType[] = [
   {
     name: '传感器',
     tenant: 'tenant1',
@@ -139,4 +139,4 @@ const thingTypeList: ThingType[] = [
   }
 ];
 
-export default thingTypeList;
+export default thingTypes;
