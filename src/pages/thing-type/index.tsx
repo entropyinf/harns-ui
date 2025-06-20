@@ -31,8 +31,6 @@ export default function ThingTypePage() {
 					<h1>Things</h1>
 				</TabsContent>
 			</Tabs>
-
-
 		</div>
 	)
 }
