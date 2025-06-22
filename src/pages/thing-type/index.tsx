@@ -3,7 +3,7 @@ import thingTypes from "./data";
 import type { ThingType } from "./types";
 import { Tree } from "./tree";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { NotificationsForm } from "./notifications-form";
+import { NotificationsForm } from "./form";
 
 export default function ThingTypePage() {
 	const [selected, setSelected] = useState<ThingType | null>(null)

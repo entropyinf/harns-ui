@@ -1,4 +1,4 @@
-import { AuthenticatedLayout } from '@/components/layout/authenticated-layout';
+import { AuthenticatedLayout } from "./authenticated-layout";
 
 export default function Layout() {
   return (

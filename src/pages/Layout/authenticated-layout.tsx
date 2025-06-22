@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 import { cn } from '@/lib/utils'
 import { SearchProvider } from '@/context/search-context'
 import { SidebarProvider } from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/layout/app-sidebar'
+import { AppSidebar } from '@/pages/layout/app-sidebar'
 import SkipToMain from '@/components/skip-to-main'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useMemo } from 'react'
@@ -46,7 +46,7 @@ export function AuthenticatedLayout({ children }: Props) {
           )}
         >
 
-          <p className='m-2 pl-2 border-b-1'>
+          <p className='text-xl font-bold m-2 p-4 border-b-1'>
             {locationTitle[localtion.pathname ||'']}
           </p>
 
