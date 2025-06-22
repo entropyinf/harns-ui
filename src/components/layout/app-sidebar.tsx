@@ -9,17 +9,18 @@ import { NavGroup } from '@/components/layout/nav-group'
 import { NavUser } from '@/components/layout/nav-user'
 import { TeamSwitcher } from '@/components/layout/team-switcher'
 import { sidebarData } from './data/sidebar-data'
+import { pages, Route } from '@/router'
+import { NavCollapsible, NavItem } from './types'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const navGroup = routesToNavGroup(pages)
   return (
     <Sidebar collapsible='icon' variant='floating' {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={sidebarData.teams} />
       </SidebarHeader>
       <SidebarContent>
-        {sidebarData.navGroups.map((props) => (
-          <NavGroup key={props.title} {...props} />
-        ))}
+        <NavGroup key={navGroup.title} {...navGroup} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={sidebarData.user} />
@@ -28,3 +29,31 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     </Sidebar>
   )
 }
+
+
+
+function routesToNavGroup(routes: Route[]) {
+  return {
+    title: 'base',
+    items: routes?.map(routeToNavItem) ?? []
+  }
+}
+
+function routeToNavItem(route: Route): NavItem {
+  if (route.children) {
+    return {
+      title: route.title || '',
+      icon: route.Icon,
+      items: route.children.map(routeToNavItem)
+    } as NavCollapsible
+  }
+
+  return {
+    title: route.title || '',
+    icon: route.Icon,
+    url: route.path || '',
+  }
+}
+
+
+

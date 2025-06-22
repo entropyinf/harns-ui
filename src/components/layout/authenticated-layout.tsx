@@ -4,7 +4,9 @@ import { SearchProvider } from '@/context/search-context'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import SkipToMain from '@/components/skip-to-main'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
+import { useMemo } from 'react'
+import { pages, Route } from '@/router'
 
 interface Props {
   children?: React.ReactNode
@@ -12,6 +14,20 @@ interface Props {
 
 export function AuthenticatedLayout({ children }: Props) {
   const defaultOpen = Cookies.get('sidebar_state') !== 'false'
+  const locationTitle = useMemo(() => {
+    const map: Record<string, string> = {}
+
+    function fillMap(route:Route) {
+      map[route.path || '/'] = route.title || ''
+      route.children?.forEach(fillMap)
+    }
+    pages.forEach(fillMap)
+    return map
+  }, [])
+
+
+  const localtion = useLocation()
+
   return (
     <SearchProvider>
       <SidebarProvider defaultOpen={defaultOpen}>
@@ -29,6 +45,11 @@ export function AuthenticatedLayout({ children }: Props) {
             'has-[main.fixed-main]:group-data-[scroll-locked=1]/body:h-svh'
           )}
         >
+
+          <p className='m-2 pl-2 border-b-1'>
+            {locationTitle[localtion.pathname ||'']}
+          </p>
+
           {children ? children : <Outlet />}
         </div>
       </SidebarProvider>

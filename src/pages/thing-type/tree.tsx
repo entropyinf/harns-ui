@@ -56,7 +56,7 @@ function TreeNode<T>(props: TreeNodeProp<T>) {
     >
       <div
         className={cn(
-          'cursor-pointer user-select-none hover:bg-slate-100 rounded-md inline-block w-full p-1 pl-2',
+          'cursor-pointer user-select-none hover:bg-slate-50 rounded-md inline-block w-full p-1 pl-2',
           'flex justify-between'
         )}
       >

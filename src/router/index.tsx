@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import Layout from '../pages/layout';
-import { FileAxis3d, Mail, Network, Settings, Webcam } from 'lucide-react';
+import { FileAxis3d, Mail, Network, Settings } from 'lucide-react';
 
 const DevicePage = lazy(() => import('../pages/device'));
 const ThingTypePage = lazy(() => import('../pages/thing-type'));
