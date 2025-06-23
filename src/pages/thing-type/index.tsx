@@ -37,5 +37,5 @@ export default function ThingTypePage() {
 }
 
 function Detail(props: { value: ThingType }) {
-	return <NotificationsForm/>;
+	return <NotificationsForm value={props.value} />;
 }

@@ -1,10 +1,8 @@
-import { lazy } from 'react';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import Layout from '../pages/layout';
 import { FileAxis3d, Mail, Network, Settings } from 'lucide-react';
-
-const DevicePage = lazy(() => import('../pages/device'));
-const ThingTypePage = lazy(() => import('../pages/thing-type'));
+import ThingTypePage from '../pages/thing-type'
+import DevicePage from '../pages/device'
 
 export type Route = {
   title?: string;
@@ -34,6 +32,7 @@ export const pages: Route[] = [
         path: '/configs/mail',
         title: 'Email',
         Icon: () => <Mail />,
+				element: <></>
       }
     ]
   }

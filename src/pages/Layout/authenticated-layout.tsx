@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie'
 import { cn } from '@/lib/utils'
-import { SearchProvider } from '@/context/search-context'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/pages/layout/app-sidebar'
 import SkipToMain from '@/components/skip-to-main'
@@ -29,7 +28,6 @@ export function AuthenticatedLayout({ children }: Props) {
   const localtion = useLocation()
 
   return (
-    <SearchProvider>
       <SidebarProvider defaultOpen={defaultOpen}>
         <SkipToMain />
         <AppSidebar />
@@ -53,6 +51,5 @@ export function AuthenticatedLayout({ children }: Props) {
           {children ? children : <Outlet />}
         </div>
       </SidebarProvider>
-    </SearchProvider>
   )
 }
