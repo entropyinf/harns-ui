@@ -1,4 +1,3 @@
-import { Link } from '@tanstack/react-router'
 import {
   BadgeCheck,
   Bell,
@@ -23,6 +22,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
+import { Link } from 'react-router-dom'
 
 export function NavUser({
   user,
