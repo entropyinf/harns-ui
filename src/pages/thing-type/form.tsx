@@ -1,114 +1,178 @@
-import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { useController, UseControllerProps, useFieldArray, useForm } from 'react-hook-form'
-import { ThingType } from './types'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+
 import { useState } from 'react'
+import { useController, UseControllerProps, useForm } from 'react-hook-form'
+import thingTypes from './data'
+import { Tree, TreeProp } from './tree'
+import { ThingType } from './types'
 
 export function ThingTypeForm(props: { value: ThingType }) {
-  const form = useForm<ThingType>({ values: props.value })
+	const form = useForm<ThingType>({ values: props.value })
+	const [data] = useState(thingTypes)
 
-  return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit((data) => console.log(data))}
-        className='flex flex-col gap-y-4'
-      >
-        <div className='flex space-x-2 gap-y-4'>
-          <TextInput control={form.control} name='id' disabled />
-          <TextInput control={form.control} name='tenant' />
-          <TextInput control={form.control} name='version' disabled />
-        </div>
+	return (
+		<form onSubmit={form.handleSubmit((data) => console.log(data))}>
+			<div>
+				<Textinput control={form.control} name='id' disabled />
+				<Textinput control={form.control} name='tenant' disabled />
+				<Textinput control={form.control} name='version' disabled />
+			</div>
 
-        <TextInput control={form.control} name='name' />
-        <TextInput control={form.control} name='parentTypeId' />
-        <TestareaInput control={form.control} name='description' />
+			<Textinput control={form.control} name='name' />
+			<Treeselect control={form.control} name='parentTypeId'
+				data={data}
+				getId={v => v.id}
+				getTitle={v => v.name}
+				getParentId={v => v.parentTypeId}
+			/>
+			<Testareainput control={form.control} name='description' />
 
-        <Characteristic control={form.control} name='characteristics' />
+			<Characteristic control={form.control} name='characteristics' />
+			<PropertySets control={form.control} name='propertySets' />
 
-        <div className='grid grid-cols-2 space-x-2 gap-y-4'>
-          <TextInput control={form.control} name='createdBy' disabled />
-          <TextInput control={form.control} name='updatedBy' disabled />
-          <TextInput control={form.control} name='createdTime' disabled />
-          <TextInput control={form.control} name='updatedTime' disabled />
-        </div>
+			<div className='grid grid-cols-2 space-x-2 gap-y-4'>
+				<Textinput control={form.control} name='createdBy' disabled />
+				<Textinput control={form.control} name='updatedBy' disabled />
+				<Textinput control={form.control} name='createdTime' disabled />
+				<Textinput control={form.control} name='updatedTime' disabled />
+			</div>
 
-        <Button type='submit'>Update</Button>
-      </form>
-    </Form>
-  )
+			<button type='submit'>Update</button>
+		</form>
+	)
 }
 
-type InputProp = {
-  headless?: boolean
+type inputProp = {
+	headless?: boolean
 }
 
 
-export function TextInput(props: UseControllerProps<ThingType> & InputProp) {
-  const { headless } = props
-  const { field } = useController(props)
+export function Textinput(props: UseControllerProps<ThingType> & inputProp) {
+	const { headless } = props
+	const { field } = useController(props)
 
-  return <FormItem>
-    {!headless && <FormLabel>{field.name}</FormLabel>}
-    <FormControl>
-      <Input
-        {...field}
-        onChange={field.onChange}
-        value={typeof field.value === 'string' ? field.value : ''}
-        ref={field.ref}
-      />
-    </FormControl>
-    <FormMessage />
-  </FormItem>
+	return <>
+		{!headless && <span>{field.name}</span>}
+		<div>
+			<input
+				{...field}
+				onChange={field.onChange}
+				value={typeof field.value === 'string' ? field.value : ''}
+				ref={field.ref}
+			/>
+		</div>
+		<div />
+	</>
 }
 
-export function TestareaInput(props: UseControllerProps<ThingType> & InputProp) {
-  const { headless } = props
-  const { field } = useController(props)
+export function Testareainput(props: UseControllerProps<ThingType> & inputProp) {
+	const { headless } = props
+	const { field } = useController(props)
 
-  return <FormItem>
-    {!headless && <FormLabel>{field.name}</FormLabel>}
-    <FormControl>
-      <Textarea
-        {...field}
-        onChange={field.onChange}
-        value={typeof field.value === 'string' ? field.value : ''}
-        ref={field.ref}
-      />
-    </FormControl>
-    <FormMessage />
-  </FormItem>
+	return <>
+		{!headless && <span>{field.name}</span>}
+		<div>
+			<textarea
+				{...field}
+				onChange={field.onChange}
+				value={typeof field.value === 'string' ? field.value : ''}
+				ref={field.ref}
+			/>
+		</div>
+		<div />
+	</>
+}
+
+export function Treeselect<T>(props: UseControllerProps<ThingType> & inputProp & TreeProp<T>) {
+	const { headless } = props
+	const { field } = useController(props)
+
+	return <>
+		{!headless && <span>{field.name}</span>}
+		<div >
+			<select>
+				<div>
+					<div>
+						{field.value as string}
+					</div>
+				</div>
+				<div>
+					<Tree {...props} onSelected={(v) => field.onChange(v)} />
+				</div>
+			</select>
+		</div>
+		<div />
+	</>
 }
 
 export function Characteristic(props: UseControllerProps<ThingType, "characteristics">) {
-  const { control } = props
-  const { field } = useController(props);
-  const [fields] = useState(["temperature", "humidity"])
+	const { control } = props
+	const { field: { name, value } } = useController(props);
 
-  return (<>
-    <FormLabel>{field.name}</FormLabel>
-    <table>
-      <tr className='text-gray-500 text-xs text-center'>
-        <td>Name</td>
-        <td>Unit</td>
-        <td>Length</td>
-        <td>Data type</td>
-        <td>Default</td>
-      </tr>
-      {fields.map((name) => (<tr key={name}>
-        <td><TextInput control={control} headless name={`${field.name}.${name}.name`} /></td>
-        <td><TextInput control={control} headless name={`${field.name}.${name}.unit`} /></td>
-        <td><TextInput control={control} headless name={`${field.name}.${name}.length`} /></td>
-        <td><TextInput control={control} headless name={`${field.name}.${name}.dataType`} /></td>
-        <td><TextInput control={control} headless name={`${field.name}.${name}.defaultValue`} /></td>
-      </tr>))}
-    </table>
-  </>)
+	const fields = {
+		name: { title: 'Name' },
+		unit: { title: 'Unit' },
+		length: { title: 'Length' },
+		dataType: { title: 'Type' },
+		defaultValue: { title: 'Default' }
+	}
+
+	return (<>
+		<span>{name}</span>
+		<table>
+			<thead >
+				<tr>
+					{Object.entries(fields).map(([k, v]) => <th key={k}>{v.title}</th>)}
+				</tr>
+			</thead>
+			<tbody>
+				{Object.entries(value).map(([k]) => (
+					<tr key={k}>
+						{Object.entries(fields).map(([f]) => (
+							<td key={f} >
+								<Textinput control={control} headless name={`${name}.${k}.${f}`} />
+							</td>
+						))}
+					</tr>
+				))}
+			</tbody>
+		</table>
+	</>)
+}
+
+export function PropertySets(props: UseControllerProps<ThingType, "propertySets">) {
+	const { control } = props
+	const { field: { name, value } } = useController(props);
+
+	const fields = {
+		name: { title: 'Name' },
+		unit: { title: 'Unit' },
+		length: { title: 'Length' },
+		dataType: { title: 'Type' },
+		defaultValue: { title: 'Default' },
+		accessMode: { title: 'Access Mode' },
+		min: { title: 'Min' },
+		max: { title: 'Max' },
+	}
+
+	return (<>
+		<span>{name}</span>
+		<table>
+			<thead >
+				<tr>
+					{Object.entries(fields).map(([k, v]) => <th key={k}>{v.title}</th>)}
+				</tr>
+			</thead>
+			<tbody>
+				{Object.entries(value).map(([k]) => (
+					<tr key={k}>
+						{Object.entries(fields).map(([f]) => (
+							<td key={f} >
+								<Textinput control={control} headless name={`${name}.${k}.${f}`} />
+							</td>
+						))}
+					</tr>
+				))}
+			</tbody>
+		</table>
+	</>)
 }
